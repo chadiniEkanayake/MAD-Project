@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'sign_in_page.dart'; // Import your Sign-In page
+// Import your Sign-In page
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(); // Initialize Firebase
   runApp(MyApp());
-}
-
-class Firebase {
-  static initializeApp() {}
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +25,6 @@ class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
@@ -41,7 +36,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Future.delayed(Duration(seconds: 6), () {
       // After the delay, navigate to another screen (e.g., HomeScreen)
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
@@ -81,10 +75,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Color(0xFF424d42),
       ),
       body: Center(
-        child: Text(
-          'Welcome to GlowMate!',
-          style: TextStyle(fontSize: 24),
-        ),
+        child: Text('Welcome to GlowMate!', style: TextStyle(fontSize: 24)),
       ),
     );
   }

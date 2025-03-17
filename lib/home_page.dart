@@ -6,14 +6,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('GlowMate Home'),
-      ),
+      appBar: AppBar(title: Text('GlowMate Home')),
       body: Center(
-        child: Text(
-          'Welcome to GlowMate!',
-          style: TextStyle(fontSize: 24),
-        ),
+        child: Text('Welcome to GlowMate!', style: TextStyle(fontSize: 24)),
       ),
     );
   }
