@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1042517465403",
-    "project_id": "autismcare-78a28",
-    "storage_bucket": "autismcare-78a28.firebasestorage.app"
+    "project_number": "714387391399",
+    "project_id": "mad-project-15ffc",
+    "storage_bucket": "mad-project-15ffc.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1042517465403:android:74ddb291baf4ec94a57f1e",
+        "mobilesdk_app_id": "1:714387391399:android:a5540c40ad8c4c81d12c82",
         "android_client_info": {
           "package_name": "com.example.glowmate"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDUOMv2jKYpBuwtUNw6ZOvRdQRZvZujmwA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1042517465403:android:a4a10f983b9cd6caa57f1e",
-        "android_client_info": {
-          "package_name": "com.example.testapp"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDUOMv2jKYpBuwtUNw6ZOvRdQRZvZujmwA"
+          "current_key": "AIzaSyA93C4uZxOz1GvWxk2BB1SFS2OQumK6jvU"
         }
       ],
       "services": {

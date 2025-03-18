@@ -1,69 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
-import 'sign_up_page.dart'; // Import SignUpPage
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   String _errorMessage = '';
 
-  bool _isMounted = false; // ✅ Track widget state
+  Future<void> _signUp() async {
+    setState(() {
+      _errorMessage = ''; // Reset error message on every attempt
+    });
 
-  @override
-  void initState() {
-    super.initState();
-    _isMounted = true; // ✅ Mark widget as mounted
-  }
-
-  @override
-  void dispose() {
-    _isMounted = false; // ✅ Mark widget as unmounted
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _signIn() async {
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      // Validate email format
+      if (!_emailController.text.contains('@')) {
+        setState(() {
+          _errorMessage = "Invalid email format";
+        });
+        return;
+      }
+
+      // Create a new user with email and password
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      // ✅ Only update UI if the widget is still mounted
-      if (_isMounted) {
+      // Check if the user is created successfully
+      if (userCredential.user != null) {
+        // Save the user's details in Firestore
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'name': _nameController.text.trim(),
+          'email': _emailController.text.trim(),
+        });
+
+        // Navigate to HomePage after successful sign up
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-      }
-    } catch (e) {
-      if (_isMounted) {
+      } else {
         setState(() {
-          _errorMessage = "Sign-in failed. Please try again.";
+          _errorMessage = "Failed to create user. Please try again.";
         });
       }
+    } catch (e) {
+      // Log the error message to debug the issue
+      print("Error during sign-up: $e");
+
+      setState(() {
+        // Display the specific error message
+        _errorMessage = "Sign-up failed: ${e.toString()}";
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
+      appBar: AppBar(title: const Text('Sign Up')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: 'Full Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -82,32 +103,19 @@ class _SignInPageState extends State<SignInPage> {
             ),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: _signIn,
+              onPressed: _signUp,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
               ),
-              child: const Text('Sign In', style: TextStyle(fontSize: 18)),
+              child: const Text('Sign Up', style: TextStyle(fontSize: 18)),
             ),
             if (_errorMessage.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(_errorMessage, style: const TextStyle(color: Colors.red)),
             ],
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignUpPage()),
-                );
-              },
-              child: const Text(
-                "Don't have an account? Sign Up",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
           ],
         ),
       ),
