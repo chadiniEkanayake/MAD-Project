@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:glowmate/profile.dart';
 import 'sign_in_page.dart'; // Import SignInPage
+import 'skin_type_quiz.dart'; // Import SkinTypeQuizPage
+import 'product_page.dart'; // Import ProductViewPage
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,12 +34,66 @@ class HomePage extends StatelessWidget {
             },
           )
         ],
-      ),
-      body: const Center(
-        child: Text(
-          'Welcome to GlowMate!',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ),
         ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Center(
+            child: Text(
+              'Welcome to GlowMate!',
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SkinTypeQuizPage()),
+              );
+            },
+            child: const Text('Take the Quiz'),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProductViewPage()), // ✅ Corrected Navigation
+              );
+            },
+            child: const Text('View Products'),
+          ),
+        ],
       ),
     );
   }
