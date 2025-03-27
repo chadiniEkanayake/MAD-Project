@@ -7,6 +7,7 @@ class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SignInPageState createState() => _SignInPageState();
 }
 
@@ -34,6 +35,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _signIn() async {
     try {
+      // ignore: unused_local_variable
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -42,6 +44,7 @@ class _SignInPageState extends State<SignInPage> {
       // ✅ Only update UI if the widget is still mounted
       if (_isMounted) {
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );

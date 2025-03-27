@@ -87,8 +87,7 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ProductViewPage()), // ✅ Corrected Navigation
+                    builder: (context) => const ProductViewPage()),
               );
             },
             child: const Text('View Products'),
