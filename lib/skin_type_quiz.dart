@@ -9,7 +9,7 @@ class SkinTypeQuizPage extends StatefulWidget {
 }
 
 class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
-  final Color backgroundColor = Color(0xFF424D42);
+  final Color backgroundColor = Color(0xFF093329);
   int scoreDry = 0,
       scoreOily = 0,
       scoreCombo = 0,
