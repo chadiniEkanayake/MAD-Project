@@ -9,6 +9,7 @@ class ProfilePage extends StatelessWidget {
     await FirebaseAuth.instance.signOut();
     // Navigate back to the Sign-In page after logging out
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => const SignInPage()),
     );

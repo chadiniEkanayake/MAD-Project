@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SkinTypeQuizPage extends StatefulWidget {
+  const SkinTypeQuizPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SkinTypeQuizPageState createState() => _SkinTypeQuizPageState();
 }
 
