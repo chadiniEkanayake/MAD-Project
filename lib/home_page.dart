@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:glowmate/profile.dart';
-import 'sign_in_page.dart'; // Import SignInPage
-import 'skin_type_quiz.dart'; // Import SkinTypeQuizPage
-import 'product_page.dart'; // Import ProductViewPage
+import 'sign_in_page.dart';
+import 'skin_type_quiz.dart';
+import 'product_page.dart'; // Ensure correct import
+import 'image_upload_page.dart'; // Import the image upload page
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,13 +20,13 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               User? user = FirebaseAuth.instance.currentUser;
               if (user != null) {
-                // ✅ If user is signed in, go to ProfilePage
+                // If user is signed in, go to ProfilePage
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
               } else {
-                // ✅ If user is NOT signed in, go to SignInPage
+                // If user is NOT signed in, go to SignInPage
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SignInPage()),
@@ -91,6 +92,23 @@ class HomePage extends StatelessWidget {
               );
             },
             child: const Text('View Products'),
+          ),
+          const SizedBox(height: 10),
+          // New button to navigate to the image upload page
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ImageUploadPage()), // Navigate to ImageUploadPage
+              );
+            },
+            child: const Text('Upload Product Image'),
           ),
         ],
       ),
