@@ -5,6 +5,8 @@ import 'sign_in_page.dart';
 import 'skin_type_quiz.dart';
 import 'product_page.dart'; // Ensure correct import
 import 'image_upload_page.dart'; // Import the image upload page
+import 'sign_up_page.dart'; // Import the Sign Up page
+import 'settings_page.dart'; // Import the Settings page
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -52,6 +54,47 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+      // Drawer with color adjustments
+      drawer: Drawer(
+        backgroundColor: Colors.white, // Set background color to white
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.white, // Set header background color to white
+              ),
+              child: Text(
+                'GlowMate Menu',
+                style: TextStyle(
+                  color: Colors.black, // Set text color to black
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Sign Up',
+                  style: TextStyle(color: Colors.black)), // Black text
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignUpPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Settings',
+                  style: TextStyle(color: Colors.black)), // Black text
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsPage()),
+                );
+              },
+            ),
+          ],
         ),
       ),
       body: Column(
