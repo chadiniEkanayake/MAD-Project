@@ -74,6 +74,7 @@ class ProductViewPage extends StatelessWidget {
                         // 🔹 Text Overlay with Background
                         Container(
                           padding: const EdgeInsets.all(8),
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.6),
                           width: double.infinity,
                           child: Text(

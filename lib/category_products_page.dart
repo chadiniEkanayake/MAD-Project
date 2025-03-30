@@ -18,8 +18,6 @@ class CategoryProductsPage extends StatelessWidget {
         : categoryName;
 
     // Debugging output to confirm path correction
-    print(
-        'Querying path for category: /products/$correctedCategoryName/brands');
 
     return Scaffold(
       appBar: AppBar(title: Text(categoryName)),
@@ -37,11 +35,8 @@ class CategoryProductsPage extends StatelessWidget {
             }
 
             if (!brandSnapshot.hasData || brandSnapshot.data!.docs.isEmpty) {
-              print('No brands found for category: $correctedCategoryName');
               return const Center(child: Text("No brands available"));
             }
-
-            print('Found brands: ${brandSnapshot.data!.docs.length}');
 
             // Fetch products from each brand
             List<Future<QuerySnapshot>> productQueries =
@@ -64,12 +59,8 @@ class CategoryProductsPage extends StatelessWidget {
                 }
 
                 if (!productSnapshot.hasData || productSnapshot.data!.isEmpty) {
-                  print(
-                      'No products available for category: $correctedCategoryName');
                   return const Center(child: Text("No products available"));
                 }
-
-                print('Found products: ${productSnapshot.data!.length}');
 
                 // Combine all products into a single list
                 List<DocumentSnapshot> products = productSnapshot.data!
@@ -132,6 +123,7 @@ class CategoryProductsPage extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.all(8),
+                              // ignore: deprecated_member_use
                               color: Colors.black.withOpacity(0.6),
                               width: double.infinity,
                               child: Text(
