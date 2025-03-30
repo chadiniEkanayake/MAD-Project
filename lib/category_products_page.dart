@@ -9,36 +9,49 @@ class CategoryProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Categories that accidentally have a space in Firestore
+    List<String> categoriesWithSpace = ["Toner", "Cleanser", "Moisturizer"];
+
+    // Add a space if the category is in the list
+    String correctedCategoryName = categoriesWithSpace.contains(categoryName)
+        ? "$categoryName " // Ensure space after the name
+        : categoryName;
+
+    // Debugging output to confirm path correction
+    print(
+        'Querying path for category: /products/$correctedCategoryName/brands');
+
     return Scaffold(
       appBar: AppBar(title: Text(categoryName)),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: StreamBuilder<QuerySnapshot>(
-          // 🔹 Query path adjusted to match Firestore structure
           stream: FirebaseFirestore.instance
-              .collection('products') // Root collection
-              .doc(categoryName) // Select category
-              .collection('brands') // Select the brands subcollection
-              .snapshots(), // Fetch the data
+              .collection('products')
+              .doc(correctedCategoryName)
+              .collection('brands')
+              .snapshots(),
           builder: (context, brandSnapshot) {
             if (brandSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
 
             if (!brandSnapshot.hasData || brandSnapshot.data!.docs.isEmpty) {
-              print("❌ No brands found for category: $categoryName");
+              print('No brands found for category: $correctedCategoryName');
               return const Center(child: Text("No brands available"));
             }
 
-            // 🔹 Fetch products from each brand
+            print('Found brands: ${brandSnapshot.data!.docs.length}');
+
+            // Fetch products from each brand
             List<Future<QuerySnapshot>> productQueries =
                 brandSnapshot.data!.docs.map((brandDoc) {
               return FirebaseFirestore.instance
                   .collection('products')
-                  .doc(categoryName)
+                  .doc(correctedCategoryName)
                   .collection('brands')
                   .doc(brandDoc.id)
-                  .collection('products') // Products under each brand
+                  .collection('products')
                   .get();
             }).toList();
 
@@ -51,10 +64,14 @@ class CategoryProductsPage extends StatelessWidget {
                 }
 
                 if (!productSnapshot.hasData || productSnapshot.data!.isEmpty) {
+                  print(
+                      'No products available for category: $correctedCategoryName');
                   return const Center(child: Text("No products available"));
                 }
 
-                // 🔹 Combine all products into a single list
+                print('Found products: ${productSnapshot.data!.length}');
+
+                // Combine all products into a single list
                 List<DocumentSnapshot> products = productSnapshot.data!
                     .expand((querySnap) => querySnap.docs)
                     .toList();
@@ -69,6 +86,8 @@ class CategoryProductsPage extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     var product = products[index];
+                    var productData =
+                        product.data() as Map<String, dynamic>? ?? {};
 
                     return GestureDetector(
                       onTap: () {
@@ -77,7 +96,11 @@ class CategoryProductsPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ProductDetailPage(
                               productId: product.id,
-                              productName: product['name'],
+                              category: correctedCategoryName,
+                              brand: product.reference.parent.parent!.id,
+                              productName:
+                                  productData['name'] ?? 'Unknown Product',
+                              imageUrl: productData['imageURL'] ?? '',
                             ),
                           ),
                         );
@@ -93,13 +116,13 @@ class CategoryProductsPage extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.network(
-                                product['imageURL'],
+                                productData['imageURL'] ?? '',
                                 width: double.infinity,
                                 height: double.infinity,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
-                                    'assets/images/placeholder.png', // Local placeholder image
+                                    'assets/images/placeholder.png',
                                     width: double.infinity,
                                     height: double.infinity,
                                     fit: BoxFit.cover,
@@ -112,7 +135,7 @@ class CategoryProductsPage extends StatelessWidget {
                               color: Colors.black.withOpacity(0.6),
                               width: double.infinity,
                               child: Text(
-                                product['name'],
+                                productData['name'] ?? 'Unknown Product',
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,

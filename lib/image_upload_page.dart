@@ -8,14 +8,16 @@ class ImageUploadPage extends StatefulWidget {
   const ImageUploadPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ImageUploadPageState createState() => _ImageUploadPageState();
 }
 
 class _ImageUploadPageState extends State<ImageUploadPage> {
   final ImagePicker _picker = ImagePicker();
   String? _imageUrl;
-  TextEditingController _productNameController = TextEditingController();
-  TextEditingController _productDescriptionController = TextEditingController();
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _productDescriptionController =
+      TextEditingController();
 
   // Function to pick and upload image to Firebase
   Future<void> _uploadImage() async {

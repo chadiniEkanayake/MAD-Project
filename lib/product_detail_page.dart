@@ -3,19 +3,32 @@ import 'package:flutter/material.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final String productId;
-  final String productName; // Add this field
+  final String category;
+  final String brand;
+  final String productName;
+  final String imageUrl;
 
-  const ProductDetailPage(
-      {super.key, required this.productId, required this.productName});
+  const ProductDetailPage({
+    super.key,
+    required this.productId,
+    required this.category,
+    required this.brand,
+    required this.productName,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(productName), // Use productName here
+        title: Text(productName),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
+            .collection('products')
+            .doc(category)
+            .collection('brands')
+            .doc(brand)
             .collection('products')
             .doc(productId)
             .get(),
@@ -30,9 +43,6 @@ class ProductDetailPage extends StatelessWidget {
 
           var product = snapshot.data!.data() as Map<String, dynamic>;
 
-          // Safe field access
-          String imageUrl =
-              product['imageURL'] ?? 'https://via.placeholder.com/150';
           String description = product.containsKey('description')
               ? product['description']
               : 'No description available.';
@@ -51,11 +61,19 @@ class ProductDetailPage extends StatelessWidget {
                     width: 250,
                     height: 250,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/placeholder.png', // Placeholder image path
+                        width: 250,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  productName, // Use productName
+                  productName,
                   style: const TextStyle(
                       fontSize: 24, fontWeight: FontWeight.bold),
                 ),
