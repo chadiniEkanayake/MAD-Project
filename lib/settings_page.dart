@@ -6,6 +6,7 @@ class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SettingsPageState createState() => _SettingsPageState();
 }
 
@@ -32,6 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _logOut() async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => const SignInPage()),
     );
@@ -50,6 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
       // Update email (if changed)
       if (_emailController.text != user?.email) {
+        // ignore: deprecated_member_use
         user?.updateEmail(_emailController.text);
       }
 
