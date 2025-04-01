@@ -13,6 +13,17 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+ @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF103c37),
+      body: Center(
+        child: Image.asset('assets/images/welcomepage.jpg', fit: BoxFit.cover),
+      ),
+    );
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
