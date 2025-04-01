@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'GlowMate',
       theme: ThemeData(
-        primaryColor: const Color(0xFF424D42), // Dark Green
-        scaffoldBackgroundColor: const Color(0xFF424D42), // Background color
+        primaryColor: const Color(0xFF103c37), // Dark Green
+        scaffoldBackgroundColor: const Color(0xFF103c37), // Background color
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF424D42), // Dark Green
+          backgroundColor: Color(0xFF103c37), // Dark Green
           foregroundColor: Colors.white, // White text/icons
         ),
         textTheme: const TextTheme(
@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF424D42),
+      backgroundColor: const Color(0xFF103c37),
       appBar: AppBar(elevation: 0),
       body: const Center(
         child: Text(

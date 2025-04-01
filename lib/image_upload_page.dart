@@ -50,8 +50,10 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
         'imageUrl': downloadUrl,
       });
 
+      // ignore: avoid_print
       print('Image and product details uploaded successfully!');
     } catch (e) {
+      // ignore: avoid_print
       print('Error uploading image: $e');
     }
   }
