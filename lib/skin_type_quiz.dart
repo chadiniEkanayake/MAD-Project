@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 
 class SkinTypeQuizPage extends StatefulWidget {
   const SkinTypeQuizPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SkinTypeQuizPageState createState() => _SkinTypeQuizPageState();
 }
 
@@ -93,17 +95,24 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
 
   String getSkinType() {
     Map<String, int> scores = {
-      "Dry Skin": scoreDry,
-      "Oily Skin": scoreOily,
-      "Combination Skin": scoreCombo,
-      "Sensitive Skin": scoreSensitive,
-      "Normal Skin": scoreNormal,
+      "Dry": scoreDry,
+      "Oily": scoreOily,
+      "Combination": scoreCombo,
+      "Sensitive": scoreSensitive,
+      "Normal": scoreNormal,
     };
 
-    // Determine the skin type with the highest score
-    String skinType =
-        scores.entries.reduce((a, b) => a.value > b.value ? a : b).key;
-    return skinType;
+    return scores.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+  }
+
+  Future<void> saveSkinType(String skinType) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
+        {'skinType': skinType},
+        SetOptions(merge: true), // Merge to avoid overwriting other user data
+      );
+    }
   }
 
   @override
@@ -151,17 +160,18 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
                         backgroundColor: Colors.white,
                         foregroundColor: backgroundColor,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          scoreDry = 0;
-                          scoreOily = 0;
-                          scoreCombo = 0;
-                          scoreSensitive = 0;
-                          scoreNormal = 0;
-                          questionIndex = 0;
-                        });
+                      onPressed: () async {
+                        String skinType = getSkinType();
+                        await saveSkinType(skinType);
+
+                        // Navigate to the home page after storing skin type
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                        );
                       },
-                      child: Text('Retake Quiz'),
+                      child: Text('Go to Home Page'),
                     ),
                   ],
                 ),
