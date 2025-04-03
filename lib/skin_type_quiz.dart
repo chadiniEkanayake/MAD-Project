@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
 
 class SkinTypeQuizPage extends StatefulWidget {
@@ -11,13 +11,14 @@ class SkinTypeQuizPage extends StatefulWidget {
 }
 
 class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
-  final Color backgroundColor = Color(0xFF424D42);
+  final Color backgroundColor = Color(0xFF103c37);
   int scoreDry = 0,
       scoreOily = 0,
       scoreCombo = 0,
       scoreSensitive = 0,
       scoreNormal = 0;
   int questionIndex = 0;
+  String? selectedAnswer;
 
   final List<Map<String, dynamic>> questions = [
     {
@@ -84,13 +85,23 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
 
   void answerQuestion(String type) {
     setState(() {
-      if (type == 'dry') scoreDry++;
-      if (type == 'oily') scoreOily++;
-      if (type == 'combo') scoreCombo++;
-      if (type == 'sensitive') scoreSensitive++;
-      if (type == 'normal') scoreNormal++;
-      questionIndex++;
+      selectedAnswer = type;
     });
+  }
+
+  void nextQuestion() {
+    if (selectedAnswer != null) {
+      setState(() {
+        if (selectedAnswer == 'dry') scoreDry++;
+        if (selectedAnswer == 'oily') scoreOily++;
+        if (selectedAnswer == 'combo') scoreCombo++;
+        if (selectedAnswer == 'sensitive') scoreSensitive++;
+        if (selectedAnswer == 'normal') scoreNormal++;
+
+        selectedAnswer = null;
+        questionIndex++;
+      });
+    }
   }
 
   String getSkinType() {
@@ -101,17 +112,22 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
       "Sensitive": scoreSensitive,
       "Normal": scoreNormal,
     };
-
     return scores.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
 
-  Future<void> saveSkinType(String skinType) async {
+  Future<void> saveSkinType(String newSkinType) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-        {'skinType': skinType},
-        SetOptions(merge: true), // Merge to avoid overwriting other user data
-      );
+      DocumentReference userDoc =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      DocumentSnapshot snapshot = await userDoc.get();
+      String? existingSkinType =
+          snapshot.exists ? snapshot['skinType'] as String? : null;
+
+      if (existingSkinType == null || existingSkinType != newSkinType) {
+        await userDoc.set({'skinType': newSkinType}, SetOptions(merge: true));
+      }
     }
   }
 
@@ -127,20 +143,52 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    'Question ${questionIndex + 1}/${questions.length}',
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
                     questions[questionIndex]['question'],
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 20),
                   ...questions[questionIndex]['answers'].map<Widget>((answer) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: backgroundColor,
+                    bool isSelected = selectedAnswer == answer['type'];
+                    return GestureDetector(
+                      onTap: () => answerQuestion(answer['type']),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isSelected ? Colors.white : Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: isSelected ? Colors.white : Colors.white),
+                        ),
+                        child: Text(
+                          answer['text'],
+                          style: TextStyle(
+                            color: isSelected ? Colors.black : backgroundColor,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
-                      onPressed: () => answerQuestion(answer['type']),
-                      child: Text(answer['text']),
                     );
                   }).toList(),
+                  Spacer(),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          selectedAnswer == null ? Colors.black : Colors.white,
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(double.infinity, 50),
+                    ),
+                    onPressed: selectedAnswer == null ? null : nextQuestion,
+                    child: Text('Next'),
+                  ),
                 ],
               )
             : Center(
@@ -163,8 +211,6 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
                       onPressed: () async {
                         String skinType = getSkinType();
                         await saveSkinType(skinType);
-
-                        // Navigate to the home page after storing skin type
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

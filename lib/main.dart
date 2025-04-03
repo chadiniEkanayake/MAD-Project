@@ -38,7 +38,6 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -74,15 +73,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF103c37),
-      appBar: AppBar(elevation: 0),
-      body: const Center(
-        child: Text(
-          'GlowMate',
-          style: TextStyle(
-            fontSize: 60,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'GlowMate',
+              style: TextStyle(
+                fontSize: 40, // ⬆️ Increased font size
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+                height: 10), // ⬇️ Reduced space between text and image
+            ClipOval(
+              child: Image.asset(
+                'assets/images/welcomepage.jpg', // Ensure the image exists in assets
+                width: 250, // ⬆️ Increased width
+                height: 320, // ⬆️ Increased height for a larger oval
+                fit: BoxFit.cover, // Ensure the image covers the oval shape
+              ),
+            ),
+          ],
         ),
       ),
     );

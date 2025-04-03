@@ -33,8 +33,9 @@ class RecommendedProducts extends StatelessWidget {
               .where('skinType', isEqualTo: skinType)
               .snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
+            }
 
             var products = snapshot.data!.docs;
             return SizedBox(
