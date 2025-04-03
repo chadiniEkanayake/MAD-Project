@@ -7,6 +7,7 @@ class SkinTypeQuizPage extends StatefulWidget {
   const SkinTypeQuizPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SkinTypeQuizPageState createState() => _SkinTypeQuizPageState();
 }
 
@@ -221,6 +222,7 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
                         String skinType = getSkinType();
                         await saveSkinType(skinType);
                         Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
                               builder: (context) => const HomePage()),
