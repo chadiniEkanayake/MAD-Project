@@ -9,6 +9,7 @@ import 'product_page.dart';
 import 'image_upload_page.dart';
 import 'sign_up_page.dart';
 import 'settings_page.dart';
+import 'routine_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -135,6 +136,37 @@ class HomePage extends StatelessWidget {
             child: const Text('View Products'),
           ),
           const SizedBox(height: 10),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white, foregroundColor: Colors.black),
+            onPressed: () async {
+              User? user = FirebaseAuth.instance.currentUser;
+              if (user != null) {
+                DocumentSnapshot doc = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .get();
+
+                if (doc.exists &&
+                    doc.data() != null &&
+                    doc['skinType'] != null) {
+                  // Skin type exists, navigate to RoutinePage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RoutinePage()),
+                  );
+                } else {
+                  // Skin type is missing, navigate to QuizPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SkinTypeQuizPage()),
+                  );
+                }
+              }
+            },
+            child: const Text('View Your Skincare Routine'),
+          ),
+
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white, foregroundColor: Colors.black),

@@ -115,13 +115,19 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
     return scores.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
 
-  Future<void> saveSkinType(String skinType) async {
+  Future<void> saveSkinType(String newSkinType) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-        {'skinType': skinType},
-        SetOptions(merge: true),
-      );
+      DocumentReference userDoc =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+      DocumentSnapshot snapshot = await userDoc.get();
+      String? existingSkinType =
+          snapshot.exists ? snapshot['skinType'] as String? : null;
+
+      if (existingSkinType == null || existingSkinType != newSkinType) {
+        await userDoc.set({'skinType': newSkinType}, SetOptions(merge: true));
+      }
     }
   }
 
