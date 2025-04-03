@@ -121,10 +121,19 @@ class _SkinTypeQuizPageState extends State<SkinTypeQuizPage> {
       DocumentReference userDoc =
           FirebaseFirestore.instance.collection('users').doc(user.uid);
 
+      // Fetch user document
       DocumentSnapshot snapshot = await userDoc.get();
-      String? existingSkinType =
-          snapshot.exists ? snapshot['skinType'] as String? : null;
 
+      // Convert snapshot data to a Map (handling null safety)
+      Map<String, dynamic>? userData = snapshot.data() as Map<String, dynamic>?;
+
+      // Get existing skinType if it exists
+      String? existingSkinType =
+          (userData != null && userData.containsKey('skinType'))
+              ? userData['skinType'] as String?
+              : null;
+
+      // If skinType is missing or different, update Firestore
       if (existingSkinType == null || existingSkinType != newSkinType) {
         await userDoc.set({'skinType': newSkinType}, SetOptions(merge: true));
       }

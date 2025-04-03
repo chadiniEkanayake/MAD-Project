@@ -54,7 +54,7 @@ class RecommendedProducts extends StatelessWidget {
                           height: 100,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            return Image.asset('assets/placeholder.jpg',
+                            return Image.asset('assets/images/placeholder.png',
                                 width: 100, height: 100);
                           },
                         ),

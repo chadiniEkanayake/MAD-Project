@@ -67,6 +67,7 @@ flutter:
   assets:
   - assets/images/placeholder.png
   - assets/images/welcomepage.jpg
+  - assets/images/skincare_routine.jpg
   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
