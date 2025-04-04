@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-=======
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,15 +17,12 @@ class _RoutinePageState extends State<RoutinePage> {
   List<String> morningRoutine = [];
   List<String> nightRoutine = [];
   bool isLoading = true;
-<<<<<<< HEAD
   String weatherCondition = "";
   double temperature = 0.0;
 
   // Weather API Key (Replace with your own)
   final String apiKey = "YOUR_OPENWEATHER_API_KEY";
   final String city = "Colombo"; // Change to user's location
-=======
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
 
   final Map<String, Map<String, List<String>>> defaultRoutines = {
     'Oily': {
@@ -73,10 +67,6 @@ class _RoutinePageState extends State<RoutinePage> {
           skinType = doc.data()?['skinType'] as String?;
 
           if (skinType == null) {
-<<<<<<< HEAD
-=======
-            // Navigate to quiz page if skin type is not set
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const SkinTypeQuizPage()),
@@ -92,14 +82,9 @@ class _RoutinePageState extends State<RoutinePage> {
 
           isLoading = false;
         });
-<<<<<<< HEAD
 
         await _fetchWeather();
       } else {
-=======
-      } else {
-        // No user data, navigate to quiz
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const SkinTypeQuizPage()),
@@ -108,7 +93,6 @@ class _RoutinePageState extends State<RoutinePage> {
     }
   }
 
-<<<<<<< HEAD
   Future<void> _fetchWeather() async {
     final url =
         "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric";
@@ -149,8 +133,6 @@ class _RoutinePageState extends State<RoutinePage> {
     setState(() {});
   }
 
-=======
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
   Future<void> _saveRoutine() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -219,7 +201,6 @@ class _RoutinePageState extends State<RoutinePage> {
               children: [
                 Padding(
                   padding: EdgeInsets.all(10),
-<<<<<<< HEAD
                   child: Column(
                     children: [
                       Text("Skin Type: $skinType",
@@ -233,11 +214,6 @@ class _RoutinePageState extends State<RoutinePage> {
                               fontSize: 16, fontWeight: FontWeight.w500)),
                     ],
                   ),
-=======
-                  child: Text("Skin Type: $skinType",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
                 ),
                 Expanded(
                   child: ListView(
@@ -255,8 +231,4 @@ class _RoutinePageState extends State<RoutinePage> {
             ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29

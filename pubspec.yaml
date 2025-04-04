@@ -67,18 +67,8 @@ flutter:
   assets:
   - assets/images/placeholder.png
   - assets/images/welcomepage.jpg
-<<<<<<< HEAD
-=======
-  - assets/images/acne_treatment.jpg
-  - assets/images/choose_skincare.jpg
-  - assets/images/hot.jpg
-  - assets/images/humid.jpg
-  - assets/images/rainy.jpg
-  - assets/images/sunny.jpg
-  - assets/images/skincare_mistakes.jpg
-  - assets/images/natural_remedies.jpg
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
   - assets/images/skincare_routine.jpg
+  - assets/images/skincare_products.jpg
   
 
   # An image asset can refer to one or more resolution-specific "variants", see

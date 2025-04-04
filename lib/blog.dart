@@ -16,12 +16,11 @@ class BlogViewPage extends StatelessWidget {
         'page': BlogPage1(),
         'image': 'assets/images/skincare_routine.jpg'
       },
-      {
-        'title': 'Choose the Right Skincare Products for Your Skin Type',
-        'page': BlogPage2(),
-        'image': 'assets/images/choose_skincare.jpg'
-      },
-<<<<<<< HEAD
+      // {
+      //   'title': 'Choose the Right Skincare Products for Your Skin Type',
+      //   'page': BlogPage2(),
+      //   'image': 'assets/images/choose_skincare.jpg'
+      // },
       // {
       //   'title': 'How to Treat Acne',
       //   'page': BlogPage3(),
@@ -37,23 +36,6 @@ class BlogViewPage extends StatelessWidget {
       //   // 'page': BlogPage5(),
       //   'image': 'assets/images/skincare_mistakes.jpg'
       // },
-=======
-      {
-        'title': 'How to Treat Acne',
-        'page': BlogPage3(),
-        'image': 'assets/images/acne_treatment.jpg'
-      },
-      {
-        'title': 'Natural Remedies for Glowing Skin',
-        'page': BlogPage4(),
-        'image': 'assets/images/natural_remedies.jpg'
-      },
-      {
-        'title': 'Common Skincare Mistakes You Should Avoid',
-        'page': BlogPage5(),
-        'image': 'assets/images/skincare_mistakes.jpg'
-      },
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
     ];
 
     return Scaffold(
@@ -87,7 +69,6 @@ class BlogViewPage extends StatelessWidget {
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(10)),
                       child: Image.asset(
-<<<<<<< HEAD
                         blogs[index]['image'] != null &&
                                 blogs[index]['image'] is String
                             ? blogs[index]['image']
@@ -97,11 +78,6 @@ class BlogViewPage extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset('assets/images/placeholder.png');
                         },
-=======
-                        blogs[index]['image'],
-                        height: 150,
-                        fit: BoxFit.cover,
->>>>>>> b831f8f8b4d2497407cea03d751b5bf945c74c29
                       ),
                     ),
                     Padding(
