@@ -9,39 +9,10 @@ import 'product_page.dart';
 import 'image_upload_page.dart';
 import 'sign_up_page.dart';
 import 'settings_page.dart';
+import 'routine_page.dart';
 
-import 'blog_page_1.dart';
-import 'routine_page.dart'
-
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _weatherIndex = 0;
-  final List<String> weatherMessages = [
-    'Hot: Hydration is key',
-    'Humid: Apply moisturizer',
-    'Sunny: Apply sunscreen',
-    'Rainy: Protect and balance your skin'
-  ];
-
-  final List<String> weatherImages = [
-    'assets/images/hot.jpg', // Replace with actual image paths
-    'assets/images/humid.jpg', // Replace with actual image paths
-    'assets/images/sunny.jpg', // Replace with actual image paths
-    'assets/images/rainy.jpg', // Replace with actual image paths
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _cycleWeatherMessages();
-  }
 
   Future<String?> getUserSkinType() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -55,19 +26,9 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  void _cycleWeatherMessages() {
-    Future.delayed(const Duration(seconds: 5), () {
-      setState(() {
-        _weatherIndex = (_weatherIndex + 1) % weatherMessages.length;
-      });
-      _cycleWeatherMessages();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF103c37),
       appBar: AppBar(
         title: const Text('GlowMate Home'),
         actions: [
@@ -140,70 +101,41 @@ class _HomePageState extends State<HomePage> {
                         builder: (context) => const SettingsPage()));
               },
             ),
-            ListTile(
-              title: const Text('Upload Image',
-                  style: TextStyle(color: Colors.black)),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ImageUploadPage()));
-              },
-            ),
           ],
         ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
-          Container(
-            color: Colors.yellow,
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Image.asset(weatherImages[_weatherIndex],
-                    width: 50, height: 50),
-                const SizedBox(width: 10),
-                Text(
-                  weatherMessages[_weatherIndex],
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
+          const Center(
+            child: Text(
+              'Welcome to GlowMate!',
+              style: TextStyle(fontSize: 24, color: Colors.white),
             ),
           ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white, foregroundColor: Colors.black),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SkinTypeQuizPage()));
+            },
+            child: const Text('Take the Quiz'),
+          ),
           const SizedBox(height: 10),
-          Container(
-            color: Colors.yellow,
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SkinTypeQuizPage()));
-                  },
-                  child: const Text('Take the Quiz'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProductViewPage()));
-                  },
-                  child: const Text('View Products'),
-                ),
-              ],
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white, foregroundColor: Colors.black),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductViewPage()));
+            },
+            child: const Text('View Products'),
+          ),
+          const SizedBox(height: 10),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white, foregroundColor: Colors.black),
@@ -245,6 +177,8 @@ class _HomePageState extends State<HomePage> {
             child: const Text('Upload Product Image'),
           ),
           const SizedBox(height: 20),
+
+          // Recommended Products Section
           FutureBuilder<String?>(
             future: getUserSkinType(),
             builder: (context, snapshot) {
@@ -405,16 +339,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             },
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white, foregroundColor: Colors.black),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => BlogPage1()));
-            },
-            child: const Text('Read Blog'),
           ),
         ],
       ),
